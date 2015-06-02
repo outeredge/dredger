@@ -8,7 +8,9 @@ VOLUME  = /var/www
 .PHONY: help build run bash status restart destroy logs clean install update
 
 help::
-	@echo 'Default targets:'
+	@echo 'Usage: dredger [command]'
+	@echo ''
+	@echo 'Commands:'
 	@echo ''
 	@echo '  build		- Build the $(NAME) image'
 	@echo '  run		- Run at http://$(HOST)'
@@ -42,7 +44,6 @@ run::
             docker restart $(NAME); \
          fi
 	@echo 'Container now running at http://$(HOST)'
-
 
 bash::
 	@docker exec -i -t $(NAME) bash -c "export TERM=xterm && bash"

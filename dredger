@@ -1,83 +1,11 @@
 #!/bin/bash
 
-# Dreger Docker Script
-# written by David Windell
-
-set -o nounset
-set -o errexit
-
-SELF=$(basename "$0")
-UPDATE_BASE=https://raw.github.com/oliversalzburg/typo3scripts/master
-
-function showHelp() {
-  cat << EOF
-  Usage: $0 [OPTIONS]
-
-  Core:
-  --help        Display this help and exit.
-  --update      Tries to update the script to the latest version.
-
-EOF
-}
+# Dredger Launch Script
 
 if [ $# -lt 1 ]
 then
-  showHelp
+  make help
   exit 1
 fi
-
-function runSelfUpdate() {
-  echo "Performing self-update..."
-
-  _tempFileName="$0.tmp"
-  _payloadName="$0.payload"
-
-  # Download new version
-  echo -n "Downloading latest version..."
-  if ! wget --quiet --output-document="$_payloadName" $UPDATE_BASE/$SELF ; then
-    echo "Failed: Error while trying to wget new version!"
-    echo "File requested: $UPDATE_BASE/$SELF"
-    exit 1
-  fi
-  echo "Done."
-
-  # Restore shebang
-  _interpreter=$(head --lines=1 "$0")
-  echo $_interpreter > "$_tempFileName"
-  tail --lines=+2 "$_payloadName" >> "$_tempFileName"
-  rm "$_payloadName"
-
-  # Copy over modes from old version
-  OCTAL_MODE=$(stat -c '%a' $SELF)
-  if ! chmod $OCTAL_MODE "$_tempFileName" ; then
-    echo "Failed: Error while trying to set mode on $_tempFileName."
-    exit 1
-  fi
-
-  # Spawn update script
-  cat > updateScript.sh << EOF
-#!/bin/bash
-# Overwrite old file with new
-if mv "$_tempFileName" "$0"; then
-  echo "Done."
-  echo "Update complete."
-  rm -- \$0
-else
-  echo "Failed!"
-fi
-EOF
-
-  echo -n "Inserting update process..."
-  exec /bin/bash updateScript.sh
-}
-
-for option in $*; do
-  case "$option" in
-    --help|-h)
-      showHelp
-      exit 1
-      ;;
-  esac
-done
 
 exec make "$@"
