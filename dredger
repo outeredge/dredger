@@ -1,11 +1,2 @@
 #!/bin/bash
-
-# Dredger Launch Script
-
-if [ $# -lt 1 ]
-then
-  make help
-  exit 1
-fi
-
-exec make "$@"
+exec make -f /usr/local/dredger/Makefile "$@"
