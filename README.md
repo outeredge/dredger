@@ -14,7 +14,7 @@ Usage: dredger [command]
 
 Commands:
 
-  build		- Build the dredger image
+  build		- Build the docker image
   run		- Run at http://{curdir}.localhost
   bash		- Enter running container with bash
   status	- Show the status of running container
