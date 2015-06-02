@@ -20,7 +20,7 @@ Commands:
   status	- Show the status of running container
   logs		- Show logs
   restart	- Restarts the running container
-  destroy   	- Stops the running container and deletes it
+  destroy   - Stops the running container and deletes it
   clean		- Clean up all unused containers and images on this host
   install	- Run install scripts (i.e. composer)
 ```
