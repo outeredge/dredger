@@ -1,7 +1,7 @@
 # dredger
 Dredger is a docker tool to help automate local dev environments
 
-## Install / Upgrade
+## Install
 
 `$ wget -qO- https://raw.githubusercontent.com/outeredge/dredger/master/install.sh | sh`
 
