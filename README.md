@@ -1,5 +1,5 @@
 # dredger
-Dredger is a docker tool to help automate local dev environments
+Dredger is a docker tool to help automate local web development environments. It automatically starts a http proxy on port 80 so you can run multiple environments at once with ease. No more remembering container hashes!
 
 ## Install / Upgrade
 
