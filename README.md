@@ -27,7 +27,7 @@ Commands:
 
 ## Extending
 
-Add your own commands by creating a `Makefile.local" in your repositories root folder (i.e.):
+Add your own commands by creating a `Makefile.local` in your repositories root folder (i.e.):
 
 ```sh
 HOST = *.$(NAME).localhost
