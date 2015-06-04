@@ -25,6 +25,11 @@ Commands:
   install	- Run install scripts (i.e. composer)
 ```
 
+#### Custom Arguments
+To pass custom arguments to a command that supports it in the Makefile, use the ARGS syntax like so:
+
+`$ dredger ARGS="-e APPLICATION_ENV=staging" run`
+
 ## Extending
 
 Add your own commands by creating a `Makefile.local` in your repositories root folder (i.e.):
