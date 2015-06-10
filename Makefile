@@ -60,7 +60,7 @@ destroy::
 	@-docker rm $(NAME) $(NAME)-build
 
 logs::
-	@docker logs $(NAME)
+	@docker logs -f $(NAME)
 
 clean::
 	@docker ps -a -q --filter status=exited | xargs -r docker rm
