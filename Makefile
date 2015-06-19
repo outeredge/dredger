@@ -56,8 +56,8 @@ restart::
 	@docker restart $(NAME)
 
 destroy::
-	@-docker kill $(NAME) $(NAME)-build
-	@-docker rm $(NAME) $(NAME)-build
+	@-docker kill $(NAME)
+	@-docker rm $(NAME)
 
 logs::
 	@docker logs -f $(NAME)
