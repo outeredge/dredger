@@ -26,7 +26,7 @@ help::
 
 build::
 	@docker build --pull -t $(NAME) .
-	@if [ -z $(git status -s) ]; then docker run --rm -i -t -v $(CURDIR):/copy --name $(NAME)-build $(NAME) cp -r . /copy && git-timestamps; fi
+	@if [ -z $(git status -s) ]; then docker run --rm -i -t -v $(CURDIR):/copy $(NAME) cp -r . /copy && git-timestamps; fi
 
 run::
 	@if ! nc -z 127.0.0.1 80; then docker pull outeredge/edge-docker-localproxy && docker run --restart=always -d -p 80:80 -v /var/run/docker.sock:/tmp/docker.sock outeredge/edge-docker-localproxy; fi;
