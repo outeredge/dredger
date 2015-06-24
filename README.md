@@ -1,10 +1,13 @@
 # dredger
 Dredger is a docker tool to help automate local web development environments. It automatically starts a http proxy on port 80 so you can run multiple environments at once with ease. No more remembering container hashes!
 
-## Install / Upgrade
-Run the command below to install or upgrade dredger. Tested on Ubuntu 14.04.
+## Install
+Run the command below to install dredger. Tested on Ubuntu 14.04.
 
 `$ wget -qO- https://raw.githubusercontent.com/outeredge/dredger/master/install.sh | sh`
+
+## Update
+To upgrade dredger to the latest version, simply run `$ dredger self-update` from your command line.
 
 ## Usage
 
