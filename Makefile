@@ -26,7 +26,7 @@ help::
 
 build::
 	@docker build --pull -t $(NAME) .
-	@if [ -z $(git status -s) ]; then docker run --rm -i -t -v $(CURDIR):/copy $(NAME) bash -c "chmod -R g+rw /var/www && cp -r --preserve=ownership,timestamps . /copy"; fi
+	@if [ -z $(git status -s) ]; then docker run --rm -v $(CURDIR):/copy --entrypoint /bin/bash $(NAME) -c "cp -r . /copy"; fi
 	@git checkout HEAD .gitignore
 
 run::
