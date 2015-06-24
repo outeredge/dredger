@@ -21,7 +21,7 @@ help::
 	@echo '  destroy   	- Stops the running container and deletes it'
 	@echo '  clean		- Clean up all unused containers and images on this host'
 	@echo '  install	- Run app install scripts (defaults to `composer install`)'
-	@echo '  update		- Run app update scripts (defaults to `composer update`)'	 
+	@echo '  update	- Run app update scripts (defaults to `composer update`)'	 
 	@echo '  self-update	- Upgrade dredger to the latest version' 
 	@echo ''
 
