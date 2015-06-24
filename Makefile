@@ -26,7 +26,7 @@ help::
 
 build::
 	@docker build --pull -t $(NAME) .
-	@if [ -z $(git status -s) ]; then docker run --rm -v $(CURDIR):/copy $(NAME) bash -c "cp --preserve=mode,ownership -r . /copy" && git checkout HEAD .gitignore; fi
+	@if [ -z $(git status -s) ]; then docker run --rm -v $(CURDIR):/copy $(NAME) bash -c "rm -f .gitignore && cp -rp . /copy"; fi
 
 run::
 	@if ! nc -z 127.0.0.1 80; then docker pull outeredge/edge-docker-localproxy && docker run --restart=always -d -p 80:80 -v /var/run/docker.sock:/tmp/docker.sock outeredge/edge-docker-localproxy; fi;
