@@ -4,6 +4,7 @@
 NAME    = $(shell basename $(CURDIR))
 HOST    = $(NAME).localhost
 VOLUME  = /var/www
+OWNER   = www-data
 
 .PHONY: help build run bash status restart destroy logs clean install update
 
@@ -26,7 +27,7 @@ help::
 
 build::
 	@docker build --pull -t $(NAME) .
-	@if [ -z $(git status -s) ]; then docker run --rm -i -t -v $(CURDIR):/copy $(NAME) cp -r . /copy && git-timestamps; fi
+	@if [ -z $(git status -s) ]; then docker run --rm -i -t -v $(CURDIR):/copy $(NAME) bash -c "chown -R $(OWNER):$(OWNER) . && cp -r --preserve=ownership . /copy" && git-timestamps; fi
 
 run::
 	@if ! nc -z 127.0.0.1 80; then docker pull outeredge/edge-docker-localproxy && docker run --restart=always -d -p 80:80 -v /var/run/docker.sock:/tmp/docker.sock outeredge/edge-docker-localproxy; fi;
