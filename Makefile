@@ -5,7 +5,7 @@ NAME    = $(shell basename $(CURDIR))
 HOST    = $(NAME).localhost
 VOLUME  = /var/www
 
-.PHONY: help build run bash status restart destroy logs clean install update
+.PHONY: help build run bash status restart destroy logs clean install update self-update
 
 help::
 	@echo 'Usage: dredger [command]'
@@ -21,6 +21,7 @@ help::
 	@echo '  destroy   	- Stops the running container and deletes it'
 	@echo '  clean		- Clean up all unused containers and images on this host'
 	@echo '  install	- Run install scripts (i.e. composer)'
+	@echo '  self-update	- Update dredger to the latest version' 
 
 # DEFAULT TARGETS
 
@@ -69,5 +70,8 @@ install::
 
 update::
 	@docker exec -i -t $(NAME) sudo -u www-data bash -c "composer update --no-interaction --prefer-dist"
+
+self-update::
+	@wget -qO- https://raw.githubusercontent.com/outeredge/dredger/master/install.sh | sh
 
 -include Makefile.local
