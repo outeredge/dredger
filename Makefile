@@ -36,7 +36,6 @@ run::
 	@if [ "$$(docker inspect -f {{.State.Running}} $(NAME) 2> /dev/null)" = "<no value>" ]; then \
             docker run -d \
                 -v $(CURDIR):$(VOLUME) \
-                -v /tmp/composer:/root/.composer \
                 -e VIRTUAL_HOST=$(HOST) \
                 $(ENV) \
                 $(ARGS) \
