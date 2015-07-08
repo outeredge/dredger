@@ -2,7 +2,7 @@
 # To see a list of available commands execute "make help"
 
 NAME    = $(shell basename $(CURDIR))
-HOST    = $(NAME).localhost
+HOST    = $(NAME).*
 VOLUME  = /var/www
 
 .PHONY: help build run bash status restart destroy logs clean install update self-update
