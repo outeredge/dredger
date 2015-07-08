@@ -1,6 +1,8 @@
 # dredger
 Dredger is a docker tool to help automate local web development environments. It automatically starts a http proxy on port 80 so you can run multiple environments at once with ease. No more remembering container hashes!
 
+By default, containers are made accessible at `http://{foldername}.*` where `*` could be `localhost` or even (for mobile testing) `{yourip}.xip.io`, for example `http://mysite.192.168.1.100.xip.io`. You can override this by adding a `HOST = ...` to a Makefile.local in your projects root (see [extending](#extending) for an example). 
+
 ## Install
 Run the command below to install dredger. Tested on Ubuntu 14.04.
 
@@ -19,7 +21,7 @@ Usage: dredger [command]
 Commands:
 
   build		- Build the docker image
-  run		- Run at http://{curdir}.localhost
+  run		- Run at http://{curdir}.*
   bash		- Enter running container with bash
   status	- Show the status of running container
   logs		- Show logs
