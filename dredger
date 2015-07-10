@@ -1,2 +1,2 @@
 #!/bin/bash
-exec make -f /usr/local/dredger/Makefile "$@"
+exec make -f /usr/local/dredger/Makefile ARGS="${*:2}" "$1"
