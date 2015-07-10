@@ -46,11 +46,11 @@ run::
 	@echo 'Container now running at http://$(HOST)'
 
 bash::
-	@docker exec -i -t $(NAME) bash -c "export TERM=xterm && bash"
+	@docker exec -it $(NAME) bash -c "export TERM=xterm && bash"
 
 status::
 	@docker ps
-	@docker exec -i -t $(NAME) /usr/bin/supervisorctl status
+	@docker exec -it $(NAME) /usr/bin/supervisorctl status
 
 restart::
 	@docker restart $(NAME)
@@ -63,14 +63,14 @@ logs::
 	@docker logs -f $(NAME)
 
 clean::
-	@docker ps -a -q --filter status=exited | xargs -r docker rm
+	@docker ps -aq --filter status=exited | xargs -r docker rm
 	@docker images -q --filter dangling=true | xargs -r docker rmi
 
 install::
-	@docker exec -i -t $(NAME) sudo -u www-data bash -c "composer install --no-interaction --prefer-dist"
+	@docker exec -it -u www-data $(NAME) composer install --no-interaction --prefer-dist
 
 update::
-	@docker exec -i -t $(NAME) sudo -u www-data bash -c "composer update --no-interaction --prefer-dist"
+	@docker exec -it -u www-data $(NAME) composer update --no-interaction --prefer-dist
 
 self-update::
 	@wget -qO- https://raw.githubusercontent.com/outeredge/dredger/master/install.sh | sh
