@@ -33,7 +33,7 @@ build::
 
 run::
 	@if ! nc -z 127.0.0.1 80; then docker pull outeredge/edge-docker-localproxy && docker run --restart=always -d -p 80:80 -v /var/run/docker.sock:/tmp/docker.sock outeredge/edge-docker-localproxy; fi;
-	@if [ "$$(docker inspect -f {{.State.Running}} $(NAME) 2> /dev/null)" = "<no value>" ]; then \
+	@if ! $$(docker inspect -f {{.State.Running}} $(NAME) 2>/dev/null); then \
             docker run -d \
                 -v $(CURDIR):$(VOLUME) \
                 -e VIRTUAL_HOST=$(HOST) \
