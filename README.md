@@ -32,9 +32,9 @@ Commands:
 ```
 
 #### Custom Arguments
-To pass custom arguments to a command that supports it in the Makefile, use the ARGS syntax like so:
+To pass custom arguments to a command that supports it in the Makefile, simply append these to the end of the command like so:
 
-`$ dredger ARGS="-e APPLICATION_ENV=staging" run`
+`$ dredger run -e APPLICATION_ENV=staging`
 
 ## Extending
 
