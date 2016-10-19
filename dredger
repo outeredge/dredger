@@ -1,2 +1,2 @@
 #!/bin/bash
-exec make -f /usr/local/dredger/Makefile ARGS="${*:2}" "$1"
+exec make --silent --ignore-errors -f /usr/local/dredger/Makefile ARGS="${*:2}" "$1"
