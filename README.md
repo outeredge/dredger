@@ -9,7 +9,7 @@ Run the command below to install dredger. Tested on Ubuntu 14.04.
 `$ wget -qO- https://raw.githubusercontent.com/outeredge/dredger/master/install.sh | sudo sh`
 
 ## Upgrade
-To upgrade dredger to the latest version, simply run `$ dredger self-update` from your command line.
+To upgrade dredger to the latest version, simply run `$ sudo dredger self-update` from your command line.
 
 ## Usage
 
