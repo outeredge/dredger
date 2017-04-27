@@ -34,7 +34,10 @@ build::
 
 run::
 	@if ! nc -z 0.0.0.0 80 && ! grep -q docker /proc/1/cgroup; then docker pull outeredge/edge-docker-localproxy && docker run --restart=always -d -p 80:80 -v /var/run/docker.sock:/tmp/docker.sock outeredge/edge-docker-localproxy; fi;
-	@if ! $$(docker inspect -f {{.State.Running}} $(NAME) 2>/dev/null); then \
+	@if [ -z "$$(docker images -q $(NAME))" ]; then docker build --pull -t $(NAME) .; \
+            if [ -z $(git status -s) ]; then docker run --rm -v $(MOUNT):/copy $(NAME) bash -c "rm -f .gitignore && cp -rp . /copy"; fi; \
+            fi
+	@if [ ! "$$(docker ps -aqf name=$(NAME)))" ]; then \
             docker run -d \
                 -v $(MOUNT):$(VOLUME) \
                 -e VIRTUAL_HOST=$(HOST) \
@@ -57,8 +60,8 @@ restart::
 	@docker restart $(NAME)
 
 destroy::
-	@-docker kill $(NAME)
-	@-docker rm $(NAME)
+	@-docker kill $(NAME) 2>/dev/null || echo Container not running
+	@-docker rm $(NAME) 2>/dev/null || echo Image does not exist
 
 logs::
 	@docker logs -f $(NAME)
