@@ -1,7 +1,8 @@
 # *DREDGER - THE OUTER/EDGE DOCKER DEV TOOL*
 # To see a list of available commands execute "make help"
 
-NAME    = $(shell basename $(CURDIR))
+MOUNT   = $${DREDGER_MOUNT:-$(CURDIR)}
+NAME    = $(shell basename $(MOUNT))
 HOST    = $(NAME).*
 VOLUME  = /var/www
 
@@ -29,13 +30,13 @@ help::
 
 build::
 	@docker build --pull -t $(NAME) .
-	@if [ -z $(git status -s) ]; then docker run --rm -v $(CURDIR):/copy $(NAME) bash -c "rm -f .gitignore && cp -rp . /copy"; fi
+	@if [ -z $(git status -s) ]; then docker run --rm -v $(MOUNT):/copy $(NAME) bash -c "rm -f .gitignore && cp -rp . /copy"; fi
 
 run::
 	@if ! nc -z 0.0.0.0 80 && ! grep -q docker /proc/1/cgroup; then docker pull outeredge/edge-docker-localproxy && docker run --restart=always -d -p 80:80 -v /var/run/docker.sock:/tmp/docker.sock outeredge/edge-docker-localproxy; fi;
 	@if ! $$(docker inspect -f {{.State.Running}} $(NAME) 2>/dev/null); then \
             docker run -d \
-                -v $(CURDIR):$(VOLUME) \
+                -v $(MOUNT):$(VOLUME) \
                 -e VIRTUAL_HOST=$(HOST) \
                 $(ENV) \
                 $(ARGS) \
