@@ -37,7 +37,7 @@ run::
 	@if [ -z "$$(docker images -q $(NAME))" ]; then docker build --pull -t $(NAME) .; \
             if [ -z $(git status -s) ]; then docker run --rm -v $(MOUNT):/copy $(NAME) bash -c "rm -f .gitignore && cp -rp . /copy"; fi; \
             fi
-	@if [ ! "$$(docker ps -aqf name=$(NAME)))" ]; then \
+	@if [ ! "$$(docker ps -aqf name=$(NAME))" ]; then \
             docker run -d \
                 -v $(MOUNT):$(VOLUME) \
                 -e VIRTUAL_HOST=$(HOST) \
