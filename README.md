@@ -4,7 +4,7 @@ Dredger is a docker tool to help automate local web development environments. It
 By default, containers are made accessible at `http://{foldername}.*` where `*` could be `localhost` or even (for mobile testing) `{yourip}.xip.io`, for example `http://mysite.192.168.1.100.xip.io`. You can override this by adding a `HOST = ...` to a Makefile.local in your projects root (see [extending](#extending) for an example). 
 
 ## Install
-Run the command below to install dredger. Tested on Ubuntu 14.04.
+Run the command below to install dredger. Tested on Ubuntu 14.04, requires `make` and `netcat`.
 
 `$ wget -qO- https://raw.githubusercontent.com/outeredge/dredger/master/install.sh | sudo sh`
 
