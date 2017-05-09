@@ -2,7 +2,7 @@
 # To see a list of available commands execute "make help"
 
 MOUNT   = $${DREDGER_MOUNT:-$(CURDIR)}
-NAME    = $(shell basename $(MOUNT)).$(shell hostname)
+NAME    = $${DREDGER_NAME:-$(shell basename $(MOUNT))}
 HOST    = $(NAME).*
 VOLUME  = /var/www
 
