@@ -47,7 +47,7 @@ run::
          else \
             docker restart $(NAME); \
          fi
-	@echo 'Container now running at http://$(HOST)'
+	@echo "Container now running at http://$(HOST)"
 
 bash::
 	@docker exec -it $(NAME) bash -c "export TERM=xterm && bash"
