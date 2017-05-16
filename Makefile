@@ -54,7 +54,7 @@ bash::
 
 status::
 	@docker ps
-	@docker exec -it $(NAME) /usr/bin/supervisorctl status
+	@docker exec $(NAME) /usr/bin/supervisorctl status
 
 restart::
 	@docker restart $(NAME)
@@ -71,10 +71,10 @@ clean::
 	@docker images -q --filter dangling=true | xargs -r docker rmi
 
 install::
-	@docker exec -it -u www-data $(NAME) composer install --no-interaction --prefer-dist
+	@docker exec -u www-data $(NAME) composer install --no-interaction --prefer-dist
 
 update::
-	@docker exec -it -u www-data $(NAME) composer update --no-interaction --prefer-dist
+	@docker exec -u www-data $(NAME) composer update --no-interaction --prefer-dist
 
 self-update::
 	@wget -qO- https://raw.githubusercontent.com/outeredge/dredger/master/install.sh | sh
