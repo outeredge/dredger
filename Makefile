@@ -6,7 +6,7 @@ NAME    = $${DREDGER_NAME:-$(shell basename $(MOUNT))}
 HOST    = $(NAME).*
 VOLUME  = /var/www
 
-.PHONY: help build run bash status restart destroy logs clean install update self-update
+.PHONY: help build run bash status restart destroy logs clean install update self-update info
 
 help::
 	@echo 'Usage: dredger [command]'
@@ -78,5 +78,11 @@ update::
 
 self-update::
 	@wget -qO- https://raw.githubusercontent.com/outeredge/dredger/master/install.sh | sh
+
+info::
+	@echo "MOUNT  = $(MOUNT)"
+	@echo "NAME   = $(NAME)"
+	@echo "HOST   = $(HOST)"
+	@echo "VOLUME = $(VOLUME)"
 
 -include Makefile.local
