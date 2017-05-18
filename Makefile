@@ -81,9 +81,9 @@ self-update::
 	@wget -qO- https://raw.githubusercontent.com/outeredge/dredger/master/install.sh | sh
 
 info::
-	@echo "MOUNT  = $(MOUNT)"
-	@echo "NAME   = $(NAME)"
-	@echo "HOST   = $(HOST)"
-	@echo "VOLUME = $(VOLUME)"
+	@echo "Mount:  $(MOUNT)"
+	@echo "Name:   $(NAME)"
+	@echo "Host:   $(HOST)"
+	@echo "Volume: $(VOLUME)"
 
 -include Makefile.local
