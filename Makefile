@@ -3,8 +3,8 @@
 
 MOUNT   = $${DREDGER_MOUNT:-$(CURDIR)}
 NAME    = $${DREDGER_NAME:-$(shell basename $(MOUNT))}
-HOST    = $(NAME).*
-VOLUME  = /var/www
+HOST    = $${DREDGER_HOST:-$(NAME).*}
+VOLUME  = $${DREDGER_VOLUME:-/var/www}
 
 .PHONY: help build run bash status restart destroy logs clean install update self-update info
 
