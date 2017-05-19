@@ -24,6 +24,7 @@ help::
 	@echo '  install	- Run app install scripts (defaults to `composer install`)'
 	@echo '  update	- Run app update scripts (defaults to `composer update`)'
 	@echo '  info		- Show Dredger environment info'
+	@echo '  inspect	- Show docker inspect info for the running container'	
 	@echo '  self-update	- Upgrade Dredger to the latest version'
 	@echo ''
 
