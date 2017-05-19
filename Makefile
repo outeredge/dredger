@@ -6,7 +6,7 @@ NAME    = $${DREDGER_NAME:-$(shell basename $(MOUNT))}
 HOST    = $${DREDGER_HOST:-$(NAME).*}
 VOLUME  = $${DREDGER_VOLUME:-/var/www}
 
-.PHONY: help build run bash status restart destroy logs clean install update self-update info
+.PHONY: help build run bash status restart destroy logs clean install update self-update info inspect
 
 help::
 	@echo 'Usage: dredger [command]'
@@ -85,5 +85,8 @@ info::
 	@echo "Name:   $(NAME)"
 	@echo "Host:   $(HOST)"
 	@echo "Volume: $(VOLUME)"
+
+inspect::
+	@dredger inspect $(NAME)
 
 -include Makefile.local
