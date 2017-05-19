@@ -87,6 +87,6 @@ info::
 	@echo "Volume: $(VOLUME)"
 
 inspect::
-	@dredger inspect $(NAME)
+	@docker inspect $(NAME)
 
 -include Makefile.local
