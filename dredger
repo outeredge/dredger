@@ -3,15 +3,23 @@
 # Check if Dredger is running on Eclipse Che
 if [ -n "$CHE_PROJECTS_ROOT" ]
 then
-  hash jq 2>/dev/null || { echo -e >&2 "$(tput setaf 1)I require jq when running in Eclipse Che but it's not installed. Aborting!$(tput sgr0)"; exit 1; }
+  if tty -s
+  then
+    fgRed=$(tput setaf 1)
+    fgGreen=$(tput setaf 2)
+    fgNormal=$(tput sgr0)
+    fgBold=$(tput bold)
+  fi
+
+  hash jq 2>/dev/null || { echo -e >&2 "${fgRed}I require jq when running in Eclipse Che but it's not installed. Aborting!${fgNormal}"; exit 1; }
 
   DREDGER_CHE_MOUNT=$(docker inspect --format '{{ range .Mounts }}{{ if eq .Destination "'"$CHE_PROJECTS_ROOT"'" }}{{ .Source }}{{ end }}{{ end }}' $HOSTNAME 2>/dev/null) || {
-      echo -e >&2 "$(tput setaf 1)Unable to determine Eclipse Che host mount point. Aborting!$(tput sgr0)"; 
+      echo -e >&2 "${fgRed}Unable to determine Eclipse Che host mount point. Aborting!${fgNormal}"; 
       exit 1; 
   }
 
   DREDGER_CHE_INFO=$(curl -s $CHE_API/workspace/$CHE_WORKSPACE_ID) || {
-      echo -e >&2 "$(tput setaf 1)Unable to connect to Eclipse Che API. Aborting!$(tput sgr0)"; 
+      echo -e >&2 "${fgRed}Unable to connect to Eclipse Che API. Aborting!${fgNormal}"; 
       exit 1; 
   }
 
@@ -19,7 +27,7 @@ then
   if [ -z "$DREDGER_CHE_PROJECT" ]
   then
     DREDGER_CHE_PROJECT=$(echo $DREDGER_CHE_INFO | jq -re '.config .projects | first | .name | select (.!=null)') || {
-        echo -e >&2 "$(tput setaf 1)Could not detect Eclipse Che project name. Aborting!$(tput sgr0)"; 
+        echo -e >&2 "${fgRed}Could not detect Eclipse Che project name. Aborting!${fgNormal}"; 
         exit 1; 
     }
   fi
@@ -32,7 +40,7 @@ then
   export DREDGER_HOST=$DREDGER_CHE_PROJECT.$DREDGER_CHE_WORKSPACE.${DREDGER_CHE_HOST:-*}
   export DREDGER_MOUNT=$DREDGER_CHE_MOUNT/$DREDGER_CHE_PROJECT
 
-  echo -e "Detected Eclipse Che project $(tput bold)$DREDGER_CHE_WORKSPACE/$DREDGER_CHE_PROJECT$(tput sgr0) with host $(tput setaf 2)$DREDGER_HOST$(tput sgr0)"
+  echo -e "Detected Eclipse Che project ${fgBold}$DREDGER_CHE_WORKSPACE/$DREDGER_CHE_PROJECT${fgNormal} with host ${fgGreen}$DREDGER_HOST${fgNormal}"
 fi
 
 exec make --silent --ignore-errors -f /usr/local/dredger/Makefile ARGS="${*:2}" "$1"
