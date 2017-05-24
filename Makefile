@@ -40,7 +40,7 @@ run::
             if [ -z $(git status -s) ]; then docker run --rm -v $(MOUNT):/copy $(NAME) bash -c "rm -f .gitignore && cp -rp . /copy"; fi; \
             fi
 	@if [ ! "$$(docker ps -aqf name=$(NAME))" ]; then \
-            docker run -d \
+            docker run $(shell if [ "$$DREDGER_FOREGROUND" != true ]; then echo '-d'; fi) \
                 -v $(MOUNT):$(VOLUME) \
                 -e VIRTUAL_HOST=$(HOST) \
                 $(ENV) \
@@ -49,7 +49,6 @@ run::
          else \
             docker restart $(NAME); \
          fi
-	@echo "Container now running at http://$(HOST)"
 
 bash::
 	@docker exec -it $(NAME) bash -c "export TERM=xterm && bash"
