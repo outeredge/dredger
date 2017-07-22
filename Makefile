@@ -43,6 +43,7 @@ run::
             docker run $(shell if [ "$$DREDGER_FOREGROUND" != true ]; then echo '-d'; fi) \
                 -v $(MOUNT):$(VOLUME) \
                 -e VIRTUAL_HOST=$(HOST) \
+                -l rap.host=$(HOST) \
                 $(ENV) \
                 $(ARGS) \
                 --name $(NAME) $(NAME); \
