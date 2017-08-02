@@ -44,8 +44,8 @@ run::
                 -v $(MOUNT):$(VOLUME) \
                 -e VIRTUAL_HOST=$(HOST) \
                 -l traefik.frontend.rule=HostRegexp:$(HOST) \
-		-l traefik.port=80 \
-		-l traefik.enable=true \
+                -l traefik.port=80 \
+                -l traefik.enable=true \
                 $(ENV) \
                 $(ARGS) \
                 --name $(NAME) $(NAME); \
