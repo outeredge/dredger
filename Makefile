@@ -81,7 +81,7 @@ update::
 	@docker exec -u www-data $(NAME) composer update --no-interaction --prefer-dist
 
 self-update::
-	@wget -qO- https://raw.githubusercontent.com/outeredge/dredger/master/install.sh | sh
+	@wget -qO- https://raw.githubusercontent.com/outeredge/dredger/master/install.sh | bash
 
 info::
 	@echo "Mount:  $(MOUNT)"
