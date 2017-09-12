@@ -2,8 +2,9 @@
 set -e
 
 INSTALL_PATH=/usr/local/dredger
+ROOT_UID=0
 
-if [ $UID != 0 ]; then
+if [ $UID != $ROOT_UID ]; then
     echo "You don't have sufficient privileges to run this script, try `sudo`."
     exit 1
 fi
