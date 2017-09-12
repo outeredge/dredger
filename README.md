@@ -6,7 +6,7 @@ By default, containers are made accessible at `http://{foldername}.*` where `*` 
 ## Install
 Run the command below to install dredger. Tested on Ubuntu 14.04, requires `make` and `netcat`.
 
-`$ wget -qO- https://raw.githubusercontent.com/outeredge/dredger/master/install.sh | sudo sh`
+`$ wget -qO- https://raw.githubusercontent.com/outeredge/dredger/master/install.sh | sudo bash`
 
 ## Upgrade
 To upgrade dredger to the latest version, simply run `$ sudo dredger self-update` from your command line.
