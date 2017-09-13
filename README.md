@@ -1,7 +1,7 @@
 # dredger
-Dredger is a docker tool to help automate local web development environments. It automatically starts a traefik proxy so you can run multiple environments at once with ease. No more remembering container hashes!
+Dredger is a docker tool to help automate local web development environments. It automatically starts a traefik proxy so you can run multiple environments at once with ease. No more remembering container hashes! Dredger also works with Eclipse Che.
 
-By default, containers are made accessible at `http://{foldername}.*` where `*` could be `localhost` or even (for mobile testing) `{yourip}.xip.io`, for example `http://mysite.192.168.1.100.xip.io`. You can override this by adding a `HOST = ...` to a Makefile.local in your projects root (see [extending](#extending) for an example). 
+By default, containers are made accessible at `http://{foldername}.localhost`. You can override this by adding a `HOST = ...` to a `Makefile.local` in your projects root (see [extending](#extending)), for example `http://mysite.192.168.1.100.xip.io`.
 
 ## Install
 Run the command below to install dredger. Tested on Ubuntu 14.04, requires `make` and `netcat`.
