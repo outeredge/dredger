@@ -3,7 +3,7 @@
 
 MOUNT   = $${DREDGER_MOUNT:-$(CURDIR)}
 NAME    = $${DREDGER_NAME:-$(shell basename $(MOUNT))}
-HOST    = $${DREDGER_HOST:-$(NAME).*}
+HOST    = $${DREDGER_HOST:-$(NAME).localhost}
 VOLUME  = $${DREDGER_VOLUME:-/var/www}
 PORT    = $${DREDGER_PORT:-80}
 
