@@ -5,6 +5,7 @@ MOUNT   = $${DREDGER_MOUNT:-$(CURDIR)}
 NAME    = $${DREDGER_NAME:-$(shell basename $(MOUNT))}
 HOST    = $${DREDGER_HOST:-$(NAME).*}
 VOLUME  = $${DREDGER_VOLUME:-/var/www}
+PORT    = $${DREDGER_PORT:-80}
 
 .PHONY: help build run bash status restart destroy logs clean install update self-update info inspect
 
@@ -35,7 +36,10 @@ build::
 	@if [ -z $(git status -s) ]; then docker run --rm -v $(MOUNT):/copy $(NAME) bash -c "rm -f .gitignore && cp -rp . /copy"; fi
 
 run::
-	@if ! nc -z 0.0.0.0 80 && ! grep -q docker /proc/1/cgroup; then docker pull outeredge/edge-docker-localproxy && docker run --restart=unless-stopped -d -p 80:80 -v /var/run/docker.sock:/tmp/docker.sock outeredge/edge-docker-localproxy; fi;
+	@if ! nc -z 0.0.0.0 $(PORT) && ! grep -q docker /proc/1/cgroup; then \
+            docker pull containous/traefik:latest && \
+            docker run --restart=unless-stopped -d -p $(PORT):80 -v /var/run/docker.sock:/var/run/docker.sock containous/traefik:latest --web --docker --docker.endpoint=unix:///var/run/docker.sock; \
+            fi;
 	@if [ -z "$$(docker images -q $(NAME))" ]; then docker build --pull -t $(NAME) .; \
             if [ -z $(git status -s) ]; then docker run --rm -v $(MOUNT):/copy $(NAME) bash -c "rm -f .gitignore && cp -rp . /copy"; fi; \
             fi
