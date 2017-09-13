@@ -58,34 +58,34 @@ run::
          fi
 
 bash::
-	docker exec -it $(NAME) bash -c "export TERM=xterm && bash"
+	-docker exec -it $(NAME) bash -c "export TERM=xterm && bash"
 
 status::
-	docker ps
-	docker exec $(NAME) /usr/bin/supervisorctl status
+	-docker ps
+	-docker exec $(NAME) /usr/bin/supervisorctl status
 
 restart::
-	docker restart $(NAME)
+	-docker restart $(NAME)
 
 destroy::
 	-docker kill $(NAME) 2>/dev/null || echo Container not running
 	-docker rm $(NAME) 2>/dev/null || echo Image does not exist
 
 logs::
-	docker logs -f $(NAME)
+	-docker logs -f $(NAME)
 
 clean::
 	-docker ps -aq --filter status=exited | xargs -r docker rm
 	-docker images -q --filter dangling=true | xargs -r docker rmi
 
 install::
-	docker exec -u www-data $(NAME) composer install --no-interaction --prefer-dist
+	-docker exec -u www-data $(NAME) composer install --no-interaction --prefer-dist
 
 update::
-	docker exec -u www-data $(NAME) composer update --no-interaction --prefer-dist
+	-docker exec -u www-data $(NAME) composer update --no-interaction --prefer-dist
 
 self-update::
-	wget -qO- https://raw.githubusercontent.com/outeredge/dredger/master/install.sh | bash
+	-wget -qO- https://raw.githubusercontent.com/outeredge/dredger/master/install.sh | bash
 
 info::
 	echo "Mount:  $(MOUNT)"
@@ -94,6 +94,6 @@ info::
 	echo "Volume: $(VOLUME)"
 
 inspect::
-	docker inspect $(NAME)
+	-docker inspect $(NAME)
 
 -include Makefile.local
