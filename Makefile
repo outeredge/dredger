@@ -33,7 +33,11 @@ help::
 
 build::
 	docker build --pull -t $(NAME) .
-	if [ -z $(git status -s) ]; then docker run --rm -v $(MOUNT):/copy $(NAME) bash -c "rm -f .gitignore && cp -rp . /copy"; fi
+	if [ -z $(git status -s) ]; then \
+            docker run --rm -v $(MOUNT):/copy $(NAME) bash -c "rm -f .gitignore && cp -rp . /copy"; \
+        else \
+            echo "Git working directory not clean, not copying new build files locally"; \
+        fi
 
 run::
 	if ! nc -z 0.0.0.0 $(PORT) && ! grep -q docker /proc/1/cgroup; then \
