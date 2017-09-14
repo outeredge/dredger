@@ -25,7 +25,7 @@ help::
 	echo '  install	- Run app install scripts (defaults to `composer install`)'
 	echo '  update	- Run app update scripts (defaults to `composer update`)'
 	echo '  info		- Show Dredger environment info'
-	echo '  inspect	- Show docker inspect info for the running container'	
+	echo '  inspect	- Show docker inspect info for the running container'
 	echo '  self-update	- Upgrade Dredger to the latest version'
 	echo ''
 
@@ -33,7 +33,8 @@ help::
 
 build::
 	docker build --pull -t $(NAME) .
-	if [ -z $(git status -s) ]; then \
+	if [ -z "$$(git status -s)" ]; then \
+            echo "Copying build files to working directory" && \
             docker run --rm -v $(MOUNT):/copy $(NAME) bash -c "rm -f .gitignore && cp -rp . /copy"; \
         else \
             echo "Git working directory not clean, not copying new build files locally"; \
