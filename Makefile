@@ -46,7 +46,7 @@ run::
             docker run --restart=unless-stopped -d -p $(PORT):80 -v /var/run/docker.sock:/var/run/docker.sock containous/traefik:latest --web --docker --docker.endpoint=unix:///var/run/docker.sock; \
             fi;
 	if [ -z "$$(docker images -q $(NAME))" ]; then docker build --pull -t $(NAME) .; \
-            if [ -z $(git status -s) ]; then docker run --rm -v $(MOUNT):/copy $(NAME) bash -c "rm -f .gitignore && cp -rp . /copy"; fi; \
+            if [ -z "$$(git status -s)" ]; then docker run --rm -v $(MOUNT):/copy $(NAME) bash -c "rm -f .gitignore && cp -rp . /copy"; fi; \
             fi
 	if [ ! "$$(docker ps -aqf name=$(NAME))" ]; then \
             docker run --rm $(shell if [ "$$DREDGER_FOREGROUND" != true ]; then echo '-d'; fi) \
