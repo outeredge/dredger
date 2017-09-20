@@ -80,8 +80,7 @@ logs::
 	-docker logs -f $(NAME)
 
 clean::
-	-docker ps -aq --filter status=exited | xargs -r docker rm
-	-docker images -q --filter dangling=true | xargs -r docker rmi
+	-docker system prune -a
 
 install::
 	-docker exec -u www-data $(NAME) composer install --no-interaction --prefer-dist
