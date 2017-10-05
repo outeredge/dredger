@@ -73,8 +73,7 @@ restart::
 	-docker restart $(NAME)
 
 destroy::
-	-docker kill $(NAME) 2>/dev/null || echo Container not running
-	-docker rm $(NAME) 2>/dev/null || echo Image does not exist
+	-docker rm -f -v $(NAME) 2>/dev/null || echo "Container does not exist"
 
 logs::
 	-docker logs -f $(NAME)
