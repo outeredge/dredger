@@ -82,10 +82,10 @@ clean::
 	-docker system prune -a
 
 install::
-	-docker exec -u www-data $(NAME) composer install --no-interaction --prefer-dist
+	-docker exec $(NAME) composer install --no-interaction --prefer-dist
 
 update::
-	-docker exec -u www-data $(NAME) composer update --no-interaction --prefer-dist
+	-docker exec $(NAME) composer update --no-interaction --prefer-dist
 
 self-update::
 	-wget -qO- https://raw.githubusercontent.com/outeredge/dredger/master/install.sh | bash
