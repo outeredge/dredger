@@ -6,6 +6,7 @@ NAME    = $${DREDGER_NAME:-$(shell basename $(MOUNT))}
 HOST    = $${DREDGER_HOST:-$(NAME).localhost}
 VOLUME  = $${DREDGER_VOLUME:-/var/www}
 PORT    = $${DREDGER_PORT:-80}
+USER    = $${DREDGER_USER:-root}
 
 .PHONY: help build run bash status restart destroy logs clean install update self-update info inspect
 
@@ -63,11 +64,10 @@ run::
          fi
 
 bash::
-	-docker exec -it $(NAME) bash -c "export TERM=xterm && bash"
+	-docker exec --user=$(USER) -it $(NAME) bash
 
 status::
-	-docker ps
-	-docker exec $(NAME) /usr/bin/supervisorctl status
+	-docker exec --user=root $(NAME) /usr/bin/supervisorctl status
 
 restart::
 	-docker restart $(NAME)
@@ -82,10 +82,10 @@ clean::
 	-docker system prune -a
 
 install::
-	-docker exec $(NAME) composer install --no-interaction --prefer-dist
+	-docker exec --user=$(USER) $(NAME) composer install --no-interaction --prefer-dist
 
 update::
-	-docker exec $(NAME) composer update --no-interaction --prefer-dist
+	-docker exec --user=$(USER) $(NAME) composer update --no-interaction --prefer-dist
 
 self-update::
 	-wget -qO- https://raw.githubusercontent.com/outeredge/dredger/master/install.sh | bash
