@@ -41,7 +41,7 @@ then
   export DREDGER_MOUNT=$DREDGER_CHE_MOUNT/$DREDGER_CHE_PROJECT
   export DREDGER_FOREGROUND=true
 
-  echo -e "Detected Eclipse Che project ${fgBold}$DREDGER_CHE_WORKSPACE/$DREDGER_CHE_PROJECT${fgNormal} with host ${fgGreen}$DREDGER_HOST${fgNormal}"
+  echo -e "Detected Eclipse Che project ${fgBold}$DREDGER_CHE_WORKSPACE/$DREDGER_CHE_PROJECT${fgNormal} with host ${fgGreen}http://$DREDGER_HOST${fgNormal}"
 fi
 
 exec make --silent ${CHE_PROJECTS_ROOT:+"--include-dir=$CHE_PROJECTS_ROOT/$DREDGER_CHE_PROJECT"} -f /usr/local/dredger/Makefile ARGS="${*:2}" "$1"
