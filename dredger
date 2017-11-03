@@ -23,6 +23,11 @@ then
       exit 1; 
   }
 
+  if [[ ${PWD} != *"$CHE_PROJECTS_ROOT"* ]]
+  then
+    cd $CHE_PROJECTS_ROOT;
+  fi
+
   DREDGER_CHE_PROJECT=$(echo ${PWD#$CHE_PROJECTS_ROOT} | cut -d '/' -f 2)
   if [ -z "$DREDGER_CHE_PROJECT" ]
   then
