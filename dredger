@@ -25,7 +25,7 @@ then
 
   if [[ ${PWD} != *"$CHE_PROJECTS_ROOT"* ]]
   then
-    cd $CHE_PROJECTS_ROOT;
+    cd $CHE_PROJECTS_ROOT/*/;
   fi
 
   DREDGER_CHE_PROJECT=$(echo ${PWD#$CHE_PROJECTS_ROOT} | cut -d '/' -f 2)
