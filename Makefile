@@ -7,6 +7,7 @@ HOST    = $${DREDGER_HOST:-$(NAME).localhost}
 VOLUME  = $${DREDGER_VOLUME:-/var/www}
 PORT    = $${DREDGER_PORT:-80}
 USER    = $${DREDGER_USER:-root}
+PWD     = $${DREDGER_PWD:-$(CURDIR)}
 
 .PHONY: help build run bash status restart destroy logs clean install update self-update info inspect
 
@@ -33,7 +34,7 @@ help::
 # DEFAULT TARGETS
 
 build::
-	docker build --pull -t $(NAME) .
+	docker build --pull -t $(NAME) $(PWD)
 	if [ -z "$$(git status -s)" ]; then \
             echo "Copying build files to working directory" && \
             docker run --rm --entrypoint="" -v $(MOUNT):/copy $(NAME) bash -c "rm -f .gitignore && cp -rup . /copy"; \
@@ -46,7 +47,7 @@ run::
             docker pull containous/traefik:latest && \
             docker run --restart=unless-stopped -d -p $(PORT):80 -v /var/run/docker.sock:/var/run/docker.sock containous/traefik:latest --web --docker --docker.endpoint=unix:///var/run/docker.sock; \
             fi;
-	if [ -z "$$(docker images -q $(NAME))" ]; then docker build --pull -t $(NAME) .; \
+	if [ -z "$$(docker images -q $(NAME))" ]; then docker build --pull -t $(NAME) $(PWD); \
             if [ -z "$$(git status -s)" ]; then docker run --rm --entrypoint="" -v $(MOUNT):/copy $(NAME) bash -c "rm -f .gitignore && cp -rup . /copy"; fi; \
             fi
 	if [ ! "$$(docker ps -aqf name=$(NAME))" ]; then \
