@@ -35,7 +35,7 @@ help::
 
 build::
 	docker build --pull -t $(NAME) $(PWD)
-	if [ -z "$$(git status -s)" ]; then \
+	if [ -z "$$(git -C $(PWD) status -s)" ]; then \
             echo "Copying build files to working directory" && \
             docker run --rm --entrypoint="" -v $(MOUNT):/copy $(NAME) bash -c "rm -f .gitignore && cp -rup . /copy"; \
         else \
