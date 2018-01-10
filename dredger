@@ -18,7 +18,7 @@ then
       exit 1; 
   }
 
-  DREDGER_CHE_INFO=$(curl -s $CHE_API/workspace/$CHE_WORKSPACE_ID?token=$USER_TOKEN) || {
+  DREDGER_CHE_INFO=$(curl -s $CHE_API/workspace/$CHE_WORKSPACE_ID?token=$CHE_MACHINE_TOKEN) || {
       echo -e >&2 "${fgRed}Unable to connect to Eclipse Che API. Aborting!${fgNormal}"; 
       exit 1; 
   }
