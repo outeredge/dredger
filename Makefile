@@ -65,10 +65,10 @@ run::
          fi
 
 bash::
-	-docker exec --user=$(USER) -it $(NAME) bash
+	-docker exec -it --user=$(USER) $(NAME) bash
 
 status::
-	-docker exec --user=root $(NAME) /usr/bin/supervisorctl status
+	-docker exec -it --user=root $(NAME) /usr/bin/supervisorctl status
 
 restart::
 	-docker restart $(NAME)
@@ -83,10 +83,10 @@ clean::
 	-docker system prune -a
 
 install::
-	-docker exec --user=$(USER) $(NAME) composer install --no-interaction --prefer-dist
+	-docker exec -it --user=$(USER) $(NAME) composer install --no-interaction --prefer-dist
 
 update::
-	-docker exec --user=$(USER) $(NAME) composer update --no-interaction --prefer-dist
+	-docker exec -it --user=$(USER) $(NAME) composer update --no-interaction --prefer-dist
 
 self-update::
 	-wget -qO- https://raw.githubusercontent.com/outeredge/dredger/master/install.sh | bash
