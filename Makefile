@@ -1,6 +1,7 @@
 # *DREDGER - THE OUTER/EDGE DOCKER DEV TOOL*
 # To see a list of available commands execute "make help"
 
+SHELL   = bash
 MOUNT   = $${DREDGER_MOUNT:-$(CURDIR)}
 NAME    = $${DREDGER_NAME:-$(shell basename $(MOUNT))}
 HOST    = $${DREDGER_HOST:-$(NAME).localhost}
@@ -34,21 +35,31 @@ help::
 # DEFAULT TARGETS
 
 build::
-	docker build --pull -t $(NAME) $(PWD)
 	if [ -z "$$(git -C $(PWD) status -s)" ]; then \
+            docker build --pull -t $(NAME) $(PWD) && \
             echo "Copying build files to working directory" && \
             docker run --rm --entrypoint="" -v $(MOUNT):/copy $(NAME) bash -c "rm -f .gitignore && cp -rup . /copy"; \
         else \
-            echo "Git working directory not clean, not copying new build files locally"; \
+            read -p "Git working directory not clean, build files will not be copied locally, continue? " -n 1 -r && echo && if [[ $$REPLY =~ ^[Yy]$$ ]]; then \
+                docker build --pull -t $(NAME) $(PWD); \
+            fi; \
         fi
 
 run::
 	if ! nc -z 0.0.0.0 $(PORT) && ! grep -q docker /proc/1/cgroup; then \
             docker pull containous/traefik:latest && \
             docker run --restart=unless-stopped -d -p $(PORT):80 -v /var/run/docker.sock:/var/run/docker.sock containous/traefik:latest --web --docker --docker.endpoint=unix:///var/run/docker.sock; \
-            fi;
-	if [ -z "$$(docker images -q $(NAME))" ]; then docker build --pull -t $(NAME) $(PWD); \
-            if [ -z "$$(git -C $(PWD) status -s)" ]; then docker run --rm --entrypoint="" -v $(MOUNT):/copy $(NAME) bash -c "rm -f .gitignore && cp -rup . /copy"; fi; \
+            fi
+	if [ -z "$$(docker images -q $(NAME)t)" ]; then \
+    	        if [ -z "$$(git -C $(PWD) status -s)" ]; then \
+                    docker build --pull -t $(NAME) $(PWD) && \
+                    echo "Copying build files to working directory" && \
+                    docker run --rm --entrypoint="" -v $(MOUNT):/copy $(NAME) bash -c "rm -f .gitignore && cp -rup . /copy"; \
+                else \
+                    read -p "Git working directory not clean, build files will not be copied locally, continue? " -n 1 -r && echo && if [[ $$REPLY =~ ^[Yy]$$ ]]; then \
+                        docker build --pull -t $(NAME) $(PWD); \
+                    fi; \
+                fi; \
             fi
 	if [ ! "$$(docker ps -aqf name=$(NAME))" ]; then \
             docker run --rm $(shell if [ "$$DREDGER_FOREGROUND" != true ]; then echo '-d'; fi) \
