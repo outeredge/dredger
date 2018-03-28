@@ -50,7 +50,7 @@ run::
             docker pull containous/traefik:latest && \
             docker run --restart=unless-stopped -d -p $(PORT):80 -v /var/run/docker.sock:/var/run/docker.sock containous/traefik:latest --web --docker --docker.endpoint=unix:///var/run/docker.sock; \
             fi
-	if [ -z "$$(docker images -q $(NAME)t)" ]; then \
+	if [ -z "$$(docker images -q $(NAME))" ]; then \
     	        if [ -z "$$(git -C $(PWD) status -s)" ]; then \
                     docker build --pull -t $(NAME) $(PWD) && \
                     echo "Copying build files to working directory" && \
