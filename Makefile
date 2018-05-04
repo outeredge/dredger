@@ -6,6 +6,7 @@ MOUNT   = $${DREDGER_MOUNT:-$(CURDIR)}
 NAME    = $${DREDGER_NAME:-$(shell basename $(MOUNT))}
 HOST    = $${DREDGER_HOST:-$(NAME).localhost}
 VOLUME  = $${DREDGER_VOLUME:-/var/www}
+NETWORK = $${DREDGER_NETWORK:-bridge}
 PORT    = $${DREDGER_PORT:-80}
 USER    = $${DREDGER_USER:-root}
 PWD     = $${DREDGER_PWD:-$(CURDIR)}
@@ -63,8 +64,7 @@ run::
             fi
 	if [ ! "$$(docker ps -aqf name=$(NAME))" ]; then \
             docker run --rm \
-	        $(shell if [ "$$DREDGER_FOREGROUND" != true ]; then echo '-d'; fi) \
-		$(shell if [ -f /.dockerenv ]; then echo '--network container:'$$(hostname); fi) \
+	        $(shell if [ "$$DREDGER_FOREGROUND" != true ]; then echo '-d'; fi) \		
                 -v $(MOUNT):$(VOLUME) \
                 -e VIRTUAL_HOST=$(HOST) \
                 -l traefik.frontend.rule=HostRegexp:$(HOST) \
@@ -72,6 +72,7 @@ run::
                 -l traefik.enable=true \
                 $(ENV) \
                 $(ARGS) \
+                --network $(NETWORK) \
                 --name $(NAME) $(NAME); \
          else \
             docker restart $(NAME); \
