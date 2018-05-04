@@ -14,13 +14,13 @@ then
   hash jq 2>/dev/null || { echo -e >&2 "${fgRed}I require jq when running in Eclipse Che but it's not installed. Aborting!${fgNormal}"; exit 1; }
 
   DREDGER_CHE_MOUNT=$(docker inspect --format '{{ range .Mounts }}{{ if eq .Destination "'"$CHE_PROJECTS_ROOT"'" }}{{ .Source }}{{ end }}{{ end }}' $HOSTNAME 2>/dev/null) || {
-      echo -e >&2 "${fgRed}Unable to determine Eclipse Che host mount point. Aborting!${fgNormal}"; 
-      exit 1; 
+      echo -e >&2 "${fgRed}Unable to determine Eclipse Che host mount point. Aborting!${fgNormal}";
+      exit 1;
   }
 
   DREDGER_CHE_INFO=$(curl -s $CHE_API/workspace/$CHE_WORKSPACE_ID?token=$CHE_MACHINE_TOKEN) || {
-      echo -e >&2 "${fgRed}Unable to connect to Eclipse Che API. Aborting!${fgNormal}"; 
-      exit 1; 
+      echo -e >&2 "${fgRed}Unable to connect to Eclipse Che API. Aborting!${fgNormal}";
+      exit 1;
   }
 
   if [[ ${PWD} != *"$CHE_PROJECTS_ROOT"* ]]
@@ -32,8 +32,8 @@ then
   if [ -z "$DREDGER_CHE_PROJECT" ]
   then
     DREDGER_CHE_PROJECT=$(echo $DREDGER_CHE_INFO | jq -re '.config .projects | first | .name | select (.!=null)') || {
-        echo -e >&2 "${fgRed}Could not detect Eclipse Che project name. Aborting!${fgNormal}"; 
-        exit 1; 
+        echo -e >&2 "${fgRed}Could not detect Eclipse Che project name. Aborting!${fgNormal}";
+        exit 1;
     }
   fi
 

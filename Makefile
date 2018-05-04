@@ -6,7 +6,7 @@ MOUNT   = $${DREDGER_MOUNT:-$(CURDIR)}
 NAME    = $${DREDGER_NAME:-$(shell basename $(MOUNT))}
 HOST    = $${DREDGER_HOST:-$(NAME).localhost}
 VOLUME  = $${DREDGER_VOLUME:-/var/www}
-NETWORK = $${DREDGER_NETWORK:-bridge}
+NETWORK = $${DREDGER_NETWORK}
 PORT    = $${DREDGER_PORT:-80}
 USER    = $${DREDGER_USER:-root}
 PWD     = $${DREDGER_PWD:-$(CURDIR)}
@@ -72,8 +72,10 @@ run::
                 -l traefik.enable=true \
                 $(ENV) \
                 $(ARGS) \
-                --network $(NETWORK) \
                 --name $(NAME) $(NAME); \
+            if [ ! -z "$(NETWORK)" ]; then \
+                docker network connect $(NETWORK) $(NAME); \
+            fi; \
          else \
             docker restart $(NAME); \
          fi
