@@ -62,14 +62,16 @@ run::
                 fi; \
             fi
 	if [ ! "$$(docker ps -aqf name=$(NAME))" ]; then \
-            docker run --rm $(shell if [ "$$DREDGER_FOREGROUND" != true ]; then echo '-d'; fi) \
+            docker run --rm \
+	        $(shell if [ "$$DREDGER_FOREGROUND" != true ]; then echo '-d'; fi) \
+		$(shell if [ -f /.dockerenv ]; then echo '--network container:'$(hostname); fi) \
                 -v $(MOUNT):$(VOLUME) \
                 -e VIRTUAL_HOST=$(HOST) \
                 -l traefik.frontend.rule=HostRegexp:$(HOST) \
                 -l traefik.port=80 \
                 -l traefik.enable=true \
                 $(ENV) \
-                $(ARGS) \
+                $(ARGS) \		
                 --name $(NAME) $(NAME); \
          else \
             docker restart $(NAME); \
