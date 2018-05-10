@@ -2,6 +2,7 @@
 # To see a list of available commands execute "make help"
 
 SHELL   = bash
+SELF    = $(lastword $(MAKEFILE_LIST))
 MOUNT   = $${DREDGER_MOUNT:-$(CURDIR)}
 NAME    = $${DREDGER_NAME:-$(shell basename $(MOUNT))}
 HOST    = $${DREDGER_HOST:-$(NAME).localhost}
@@ -36,13 +37,13 @@ help::
 # DEFAULT TARGETS
 
 build::
-	if [ -z "$$(git -C $(PWD) status -s)" ]; then \
-            docker build --pull -t $(NAME) $(PWD) && \
-            echo "Copying build files to working directory" && \
+	docker build --pull -t $(NAME) $(PWD);
+        echo "Copying build files to working directory...";
+        if [ -d .git ] && [ -z "$$(git -C $(PWD) status --porcelain)" ]; then \
             docker run --rm --entrypoint="" -v $(MOUNT):/copy $(NAME) bash -c "rm -f .gitignore && cp -rup . /copy"; \
         else \
-            read -p "Git working directory not clean, build files will not be copied locally, continue? " -n 1 -r && echo && if [[ $$REPLY =~ ^[Yy]$$ ]]; then \
-                docker build --pull -t $(NAME) $(PWD); \
+            read -p "Git working directory not clean, do you want to override local changes with built files? " -n 1 -r && echo && if [[ $$REPLY =~ ^[Yy]$$ ]]; then \
+                docker run --rm --entrypoint="" -v $(MOUNT):/copy $(NAME) bash -c "rm -f .gitignore && cp -rup . /copy"; \
             fi; \
         fi
 
@@ -52,15 +53,7 @@ run::
             docker run --restart=unless-stopped -d -p $(PORT):80 -v /var/run/docker.sock:/var/run/docker.sock containous/traefik:latest --web --docker --docker.endpoint=unix:///var/run/docker.sock; \
             fi
 	if [ -z "$$(docker images -q $(NAME))" ]; then \
-    	        if [ -z "$$(git -C $(PWD) status -s)" ]; then \
-                    docker build --pull -t $(NAME) $(PWD) && \
-                    echo "Copying build files to working directory" && \
-                    docker run --rm --entrypoint="" -v $(MOUNT):/copy $(NAME) bash -c "rm -f .gitignore && cp -rup . /copy"; \
-                else \
-                    read -p "Git working directory not clean, build files will not be copied locally, continue? " -n 1 -r && echo && if [[ $$REPLY =~ ^[Yy]$$ ]]; then \
-                        docker build --pull -t $(NAME) $(PWD); \
-                    fi; \
-                fi; \
+    	        $(MAKE) -f $(SELF) build
             fi
 	if [ ! "$$(docker ps -aqf name=$(NAME))" ]; then \
             docker run --rm \
