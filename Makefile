@@ -25,7 +25,6 @@ help::
 	echo '  logs		- Show logs'
 	echo '  restart	- Restarts the running container'
 	echo '  destroy   	- Stops the running container and deletes it'
-	echo '  clean		- Clean up all unused containers and images on this host'
 	echo '  install	- Run app install scripts (defaults to `composer install`)'
 	echo '  update	- Run app update scripts (defaults to `composer update`)'
 	echo '  info		- Show Dredger environment info'
@@ -93,9 +92,6 @@ destroy::
 
 logs::
 	-docker logs -f $(NAME)
-
-clean::
-	-docker system prune -a
 
 install::
 	-docker exec -it --user=$(USER) $(NAME) composer install --no-interaction --prefer-dist
