@@ -38,14 +38,16 @@ then
   fi
 
   DREDGER_CHE_WORKSPACE=$(echo $DREDGER_CHE_INFO | jq -re '.config .name | select (.!=null)' || basename $DREDGER_MOUNT)
-  DREDGER_CHE_HOST=$(echo $DREDGER_CHE_INFO | jq -re 'first(..|.dredgerHost? | select(.!=null))')
+  DREDGER_CHE_HOST=$(echo $DREDGER_CHE_INFO | jq -re 'first(..|.dredgerHost? | select(.!=null))')  
+
+  host_ips=$(hostname -I)
 
   # Set Dredger defaults
   export DREDGER_NAME=$DREDGER_CHE_PROJECT.$DREDGER_CHE_WORKSPACE${DREDGER_CHE_HOST:+.$DREDGER_CHE_HOST}
   export DREDGER_HOST=$DREDGER_CHE_PROJECT.$DREDGER_CHE_WORKSPACE.${DREDGER_CHE_HOST:-localhost}
+  export DREDGER_HOST_IP=${host_ips%% *}
   export DREDGER_MOUNT=$DREDGER_CHE_MOUNT/$DREDGER_CHE_PROJECT
-  export DREDGER_PWD=$CHE_PROJECTS_ROOT/$DREDGER_CHE_PROJECT
-  export DREDGER_NETWORK=${CHE_WORKSPACE_ID}_default
+  export DREDGER_PWD=$CHE_PROJECTS_ROOT/$DREDGER_CHE_PROJECT  
 
   echo -e "Detected Eclipse Che project ${fgBold}$DREDGER_CHE_WORKSPACE/$DREDGER_CHE_PROJECT${fgNormal} with host ${fgGreen}http://$DREDGER_HOST${fgNormal}"
 fi
