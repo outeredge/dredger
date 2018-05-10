@@ -5,8 +5,8 @@ SHELL   = bash
 MOUNT   = $${DREDGER_MOUNT:-$(CURDIR)}
 NAME    = $${DREDGER_NAME:-$(shell basename $(MOUNT))}
 HOST    = $${DREDGER_HOST:-$(NAME).localhost}
+HOST_IP = $$(DREDGER_HOST_IP:-172.17.0.1}
 VOLUME  = $${DREDGER_VOLUME:-/var/www}
-NETWORK = $${DREDGER_NETWORK}
 PORT    = $${DREDGER_PORT:-80}
 USER    = $${DREDGER_USER:-root}
 PWD     = $${DREDGER_PWD:-$(CURDIR)}
@@ -67,15 +67,14 @@ run::
 	        $(shell if [ "$$DREDGER_FOREGROUND" != true ]; then echo '-d'; fi) \
                 -v $(MOUNT):$(VOLUME) \
                 -e VIRTUAL_HOST=$(HOST) \
+                -e XDEBUG_HOST=$(HOST_IP) \
+                -e DOCKER_HOST_IP=$(HOST_IP) \
                 -l traefik.frontend.rule=HostRegexp:$(HOST) \
                 -l traefik.port=80 \
                 -l traefik.enable=true \
                 $(ENV) \
                 $(ARGS) \
                 --name $(NAME) $(NAME); \
-            if [ ! -z "$(NETWORK)" ]; then \
-                docker network connect $(NETWORK) $(NAME); \
-            fi; \
          else \
             docker restart $(NAME); \
          fi
