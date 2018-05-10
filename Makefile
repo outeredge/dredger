@@ -60,7 +60,7 @@ run::
                     read -p "Git working directory not clean, do you want to override local changes with built files? " -n 1 -r && echo && if [[ $$REPLY =~ ^[Yy]$$ ]]; then \
                         docker run --rm --entrypoint="" -v $(MOUNT):/copy $(NAME) bash -c "rm -f .gitignore && cp -rup . /copy"; \
                     fi; \
-                fi
+                fi \
             fi
 	if [ ! "$$(docker ps -aqf name=$(NAME))" ]; then \
             docker run --rm \
