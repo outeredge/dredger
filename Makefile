@@ -18,11 +18,12 @@ help::
 	echo ''
 	echo 'Commands:'
 	echo ''
-	echo '  build		- Build the image and copy the built files if no local changes.'
+	echo '  build		- Build the image and copy the built files if no local changes'
 	echo '  run		- Run the container and proxy'
 	echo '  bash		- Enter running container with bash'
 	echo '  status	- Show the status of running container'
 	echo '  logs		- Show logs'
+	echo '  copy		- Copy files from the container to the local folder'
 	echo '  restart	- Restarts the running container'
 	echo '  destroy   	- Stops the running container and deletes it'
 	echo '  install	- Run app install scripts (defaults to `composer install`)'
@@ -77,6 +78,16 @@ run::
          else \
             docker restart $(NAME); \
          fi
+
+copy::
+	echo "Copying build files to working directory...";
+	if [ -d .git ] && [ -z "$$(git -C $(PWD) status --porcelain)" ]; then \
+            docker run --rm --entrypoint="" -v $(MOUNT):/copy $(NAME) bash -c "rm -f .gitignore && cp -rup . /copy"; \
+        else \
+            read -p "Git working directory not clean, do you want to override local changes with built files? " -n 1 -r && echo && if [[ $$REPLY =~ ^[Yy]$$ ]]; then \
+                docker run --rm --entrypoint="" -v $(MOUNT):/copy $(NAME) bash -c "rm -f .gitignore && cp -rup . /copy"; \
+            fi; \
+        fi
 
 bash::
 	-docker exec -it --user=$(USER) $(NAME) bash
