@@ -105,10 +105,10 @@ logs::
 	-docker logs -f $(NAME)
 
 install::
-	-docker exec -it --user=$(USER) $(NAME) composer install --no-interaction --prefer-dist
+	docker exec -it --user=$(USER) $(NAME) composer install --no-interaction --prefer-dist
 
 update::
-	-docker exec -it --user=$(USER) $(NAME) composer update --no-interaction --prefer-dist
+	docker exec -it --user=$(USER) $(NAME) composer update --no-interaction --prefer-dist
 
 self-update::
 	-wget -qO- https://raw.githubusercontent.com/outeredge/dredger/master/install.sh | bash
