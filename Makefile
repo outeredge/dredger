@@ -45,7 +45,8 @@ build::
                 docker run --rm --entrypoint="" -v $(MOUNT):/copy $(NAME) bash -c "rm -f .gitignore && cp -rup . /copy"; \
             fi; \
         fi
-	docker rm -f -v $(NAME) 2>/dev/null
+	echo "Removing existing containers...";
+	-docker rm -f -v $(NAME) 2>/dev/null
 
 run::
 	if ! nc -z 0.0.0.0 $(PORT) && ! grep -q docker /proc/1/cgroup; then \
