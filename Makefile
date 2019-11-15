@@ -39,10 +39,10 @@ build::
 	docker build --pull -t $(NAME) $(PWD);
 	echo "Copying build files to working directory...";
 	if [ -d .git ] && [ -z "$$(git -C $(PWD) status --porcelain)" ]; then \
-            docker run --rm --entrypoint="" -v $(MOUNT):/copy $(NAME) bash -c "rm -f .gitignore && cp -rup . /copy"; \
+            docker run --rm --user=$(USER) --entrypoint="" -v $(MOUNT):/copy $(NAME) bash -c "rm -f .gitignore && cp -rup . /copy"; \
         else \
             read -p "Git working directory not clean, do you want to override local changes with built files? " -n 1 -r && echo && if [[ $$REPLY =~ ^[Yy]$$ ]]; then \
-                docker run --rm --entrypoint="" -v $(MOUNT):/copy $(NAME) bash -c "rm -f .gitignore && cp -rup . /copy"; \
+                docker run --rm --user=$(USER) --entrypoint="" -v $(MOUNT):/copy $(NAME) bash -c "rm -f .gitignore && cp -rup . /copy"; \
             fi; \
         fi
 	echo "Removing existing containers...";
@@ -57,10 +57,10 @@ run::
             docker build --pull -t $(NAME) $(PWD); \
             echo "Copying build files to working directory..."; \
             if [ -d .git ] && [ -z "$$(git -C $(PWD) status --porcelain)" ]; then \
-                    docker run --rm --entrypoint="" -v $(MOUNT):/copy $(NAME) bash -c "rm -f .gitignore && cp -rup . /copy"; \
+                    docker run --rm --user=$(USER) --entrypoint="" -v $(MOUNT):/copy $(NAME) bash -c "rm -f .gitignore && cp -rup . /copy"; \
                 else \
                     read -p "Git working directory not clean, do you want to override local changes with built files? " -n 1 -r && echo && if [[ $$REPLY =~ ^[Yy]$$ ]]; then \
-                        docker run --rm --entrypoint="" -v $(MOUNT):/copy $(NAME) bash -c "rm -f .gitignore && cp -rup . /copy"; \
+                        docker run --rm --user=$(USER) --entrypoint="" -v $(MOUNT):/copy $(NAME) bash -c "rm -f .gitignore && cp -rup . /copy"; \
                     fi; \
                 fi \
             fi
@@ -84,10 +84,10 @@ run::
 copy::
 	echo "Copying build files to working directory...";
 	if [ -d .git ] && [ -z "$$(git -C $(PWD) status --porcelain)" ]; then \
-            docker run --rm --entrypoint="" -v $(MOUNT):/copy $(NAME) bash -c "rm -f .gitignore && cp -rup . /copy"; \
+            docker run --rm --user=$(USER) --entrypoint="" -v $(MOUNT):/copy $(NAME) bash -c "rm -f .gitignore && cp -rup . /copy"; \
         else \
             read -p "Git working directory not clean, do you want to override local changes with built files? " -n 1 -r && echo && if [[ $$REPLY =~ ^[Yy]$$ ]]; then \
-                docker run --rm --entrypoint="" -v $(MOUNT):/copy $(NAME) bash -c "rm -f .gitignore && cp -rup . /copy"; \
+                docker run --rm --user=$(USER) --entrypoint="" -v $(MOUNT):/copy $(NAME) bash -c "rm -f .gitignore && cp -rup . /copy"; \
             fi; \
         fi
 
